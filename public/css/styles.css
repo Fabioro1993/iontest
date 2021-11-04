@@ -11358,7 +11358,8 @@ html {
 }
 
 .page-section {
-  padding: 6rem 0;
+  padding-top: 0rem;
+  padding-bottom: 2rem;
 }
 .page-section .page-section-heading {
   font-size: 2.25rem;
@@ -11506,14 +11507,14 @@ html {
 .masthead .masthead-subheading {
   font-size: 1.25rem;
 }
-.masthead .masthead-avatar {
-  width: 15rem;
+ .masthead-avatar {
+  width: 35rem;
 }
 
 @media (min-width: 992px) {
   .masthead {
     padding-top: calc(6rem + 104px);
-    padding-bottom: 6rem;
+    padding-bottom: 3rem;
   }
   .masthead .masthead-heading {
     font-size: 4rem;
