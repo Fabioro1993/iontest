@@ -16,12 +16,6 @@ use App\Http\Controllers\BurgerController;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-/*Route::get('burger', [BurgerController::class, 'index']);
-Route::get('burger/{id}', [BurgerController::class, 'show']);*/
-
 Route::resource('burger', BurgerController::class)->only([
     'index', 'show'
 ]);
