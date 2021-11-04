@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Resources\BurgerResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Burger;
 
@@ -37,7 +39,27 @@ class BurgerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            Burger::create([
+                'name'          => $request->name,
+                'description'   => $request->description,
+                'regular_price' => $request->regular_price,
+                'sale_price'    => $request->sale_price,
+                'portion_size'  => $request->portion_size,
+                'calories'      => $request->calories,
+                'allegies'      => $request->allegies,
+                'tags'          => $request->tags,
+                'image'         => $request->image,
+            ]);
+
+            DB::commit();
+            return Redirect::to('home');
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -49,8 +71,6 @@ class BurgerController extends Controller
     public function show(Burger $burger)
     {
         return view('show', compact('burger'));
-
-        //return new BurgerResource($burger);
     }
 
     /**
@@ -61,7 +81,7 @@ class BurgerController extends Controller
      */
     public function edit(Burger $burger)
     {
-        //
+        // 
     }
 
     /**
@@ -71,9 +91,21 @@ class BurgerController extends Controller
      * @param  \App\Models\Burger  $burger
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Burger $burger)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $burger = Burger::findOrFail($id);
+            $burger->fill($request->all());
+            $burger->save();
+
+            DB::commit();
+            return Redirect::to('burger');
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -84,6 +116,7 @@ class BurgerController extends Controller
      */
     public function destroy(Burger $burger)
     {
-        //
+        $burger->delete();
+        return Redirect::to('home');
     }
 }
